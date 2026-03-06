@@ -11,14 +11,14 @@ export interface Eleve {
   id: string;
   nom: string;
   postnom: string;
-  classe: string; // ex: "3"
+  classe: string; 
   section: 'A' | 'B';
   portefeuille: Portefeuille;
   dateInscription: Date;
 }
 
 export interface Classe {
-  nom: string; // ex: "3ème"
+  nom: string;
   effectifA: number;
   effectifB: number;
 }
