@@ -4,12 +4,13 @@ import React, { useEffect, useState } from 'react';
 import MobileNav from '@/components/Mobilenav'; // Ajuste le chemin selon ton dossier
 import { databases, account } from '@/lib/appwrite';
 import { Query } from 'appwrite';
+import TrimestreSelector from '@/components/Trimestreselector';
 import { formatPrix } from '@/lib/config-finance';
+import AdmissionView from '@/components/Admissionview';
 import Modal from '@/components/Modal'; // Vérifie bien le nom du fichier (Modal.tsx)
 // Si tu n'as pas encore ces fichiers, on va les simuler plus bas
 import ImpayesView from '@/components/Impayesview'; 
 import ElevesView from '@/components/Elevesview';
-// import AdmissionView from '@/components/AdmissionView';
 import CaisseView from '@/components/Caisseview';
 import { CONFIG_FINANCE } from '@/lib/config-finance';
 import { useRouter } from 'next/navigation';
@@ -235,21 +236,14 @@ useEffect(() => {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-  <div className="flex items-center gap-2 bg-white p-2 rounded-2xl border border-slate-100 shadow-sm">
-    <Clock size={16} className="text-slate-400 ml-2" />
-    <select 
-  value={trimestre} 
-  onChange={(e) => setTrimestre(Number(e.target.value))}
-  className="..."
->
-  <option value={0}>Inscription Uniquement</option>
-  <option value={1}>Objectif Trimestre 1</option>
-  <option value={2}>Objectif Trimestre 2</option>
-  <option value={3}>Objectif Trimestre 3</option>
-  <option value={4}>Vue Globale (Année complète)</option> {/* Nouvelle option */}
-</select>
-  </div>
-  </div>
+  {/* Injection du composant réutilisable */}
+  <TrimestreSelector 
+    value={trimestre} 
+    onChange={setTrimestre} 
+  />
+  
+  {/* Ici tu peux ajouter d'autres boutons ou filtres si nécessaire */}
+</div>
 
         {/* GRILLE DES CARTES (Design exact photo) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -349,6 +343,7 @@ useEffect(() => {
   title={
     vueFullActive === 'paiements' ? "Caisse & Encaissements" :
     vueFullActive === 'impayes' ? "Liste des Impayés" :
+    vueFullActive === 'admissions' ? "Admission Nouvel Élève" :
     vueFullActive === 'eleves' ? "Registre des Étèves" : "Admission"
   }
 >
@@ -360,6 +355,12 @@ useEffect(() => {
       setVueFullActive(null); // Ferme la modale
       chargerDonneesDuJour(); // Rafraîchit les stats
     }} 
+  />
+)}
+{vueFullActive === 'admissions' && (
+  <AdmissionView 
+    onSuccess={() => chargerDonneesDuJour()} 
+    onClose={() => setVueFullActive(null)} // ✅ Ajoute cette ligne impérativement
   />
 )}
   {vueFullActive === 'impayes' && <ImpayesView />}
