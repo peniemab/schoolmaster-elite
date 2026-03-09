@@ -16,8 +16,8 @@ export default function CaissePage() {
   // État de l'historique réel en BDD
   const [historiquePaye, setHistoriquePaye] = useState({
     inscription: false,
-    dossier: false, // Nouvel état indépendant
-    tenue: false,    // Nouvel état indépendant
+    // dossier: false, 
+        // tenue: false,    
     t1: 0,
     t2: 0,
     t3: 0
@@ -54,8 +54,8 @@ export default function CaissePage() {
 
         const h = {
           inscription: eleve.statut_paiement === "Payé",
-          dossier: !!eleve.dossier_paye, // Lecture de la nouvelle colonne
-          tenue: !!eleve.tenue_payee,     // Lecture de la nouvelle colonne
+          // dossier: !!eleve.dossier_paye, // Lecture de la nouvelle colonne
+          // tenue: !!eleve.tenue_payee,     // Lecture de la nouvelle colonne
           t1: Number(eleve.tranche1) || 0,
           t2: Number(eleve.tranche2) || 0,
           t3: Number(eleve.tranche3) || 0
@@ -66,8 +66,8 @@ export default function CaissePage() {
         setMontantT3(h.t3);
         
         // Reset des sélections par défaut
-        setInclureDossier(false);
-        setInclureTenue(false);
+        // setInclureDossier(false);
+        // setInclureTenue(false);
       } else {
         setError(`Aucun élève trouvé avec le code : ${codeSaisi}`);
       }
@@ -91,8 +91,8 @@ export default function CaissePage() {
     }
     
     // Le dossier et la tenue s'ajoutent SI cochés ET pas encore payés en BDD
-    if (inclureDossier && !historiquePaye.dossier) total += CONFIG_FINANCE.frais.dossier;
-    if (inclureTenue && !historiquePaye.tenue) total += CONFIG_FINANCE.frais.tenue;
+    // if (inclureDossier && !historiquePaye.dossier) total += CONFIG_FINANCE.frais.dossier;
+    // if (inclureTenue && !historiquePaye.tenue) total += CONFIG_FINANCE.frais.tenue;
 
     return total + diffT1 + diffT2 + diffT3;
   };
@@ -127,12 +127,12 @@ export default function CaissePage() {
     }
     if (inclureDossier) {
         doc.text("- Frais de Dossier", 5, y);
-        doc.text(`${formatPrix(CONFIG_FINANCE.frais.dossier)}`, 75, y, { align: "right" });
+        // doc.text(`${formatPrix(CONFIG_FINANCE.frais.dossier)}`, 75, y, { align: "right" });
         y += 5;
     }
     if (inclureTenue) {
         doc.text("- Tenue Scolaire", 5, y);
-        doc.text(`${formatPrix(CONFIG_FINANCE.frais.tenue)}`, 75, y, { align: "right" });
+        // doc.text(`${formatPrix(CONFIG_FINANCE.frais.tenue)}`, 75, y, { align: "right" });
         y += 5;
     }
 
@@ -181,8 +181,8 @@ export default function CaissePage() {
       // 1. On détermine les montants réels à envoyer
       // Si déjà payé avant, on garde la valeur. Si coché maintenant, on met le prix. Sinon 0.
       const montantInscription = !historiquePaye.inscription ? CONFIG_FINANCE.frais.inscription : (Number(eleveTrouve.frais_inscription) || 0);
-      const montantDossier = (inclureDossier || historiquePaye.dossier) ? CONFIG_FINANCE.frais.dossier : 0;
-      const montantTenue = (inclureTenue || historiquePaye.tenue) ? CONFIG_FINANCE.frais.tenue : 0;
+      // const montantDossier = (inclureDossier || historiquePaye.dossier) ? CONFIG_FINANCE.frais.dossier : 0;
+      // const montantTenue = (inclureTenue || historiquePaye.tenue) ? CONFIG_FINANCE.frais.tenue : 0;
 
       // 2. Préparation du payload avec les valeurs explicites
       const payload = {
@@ -196,15 +196,16 @@ export default function CaissePage() {
         
         // Valeurs financières fixes
         frais_inscription: Number(montantInscription),
-        frais_dossier: Number(montantDossier),
-        frais_tenue: Number(montantTenue),
+        // frais_dossier: Number(montantDossier),
+        // frais_tenue: Number(montantTenue),
         
         // Indicateurs de possession
-        dossier_paye: historiquePaye.dossier || inclureDossier,
-        tenue_payee: historiquePaye.tenue || inclureTenue,
+        // dossier_paye: historiquePaye.dossier || inclureDossier,
+        // tenue_payee: historiquePaye.tenue || inclureTenue,
         
         // Total global (Somme de tout ce qui est payé en BDD)
-        total_paye: Number(montantT1 + montantT2 + montantT3 + montantInscription + montantDossier + montantTenue)
+        // total_paye: Number(montantT1 + montantT2 + montantT3 + montantInscription + montantDossier + montantTenue)
+        total_paye: Number(montantT1 + montantT2 + montantT3 + montantInscription )
       };
 
       await databases.updateDocument(
@@ -265,12 +266,12 @@ export default function CaissePage() {
               <div className={`p-4 rounded-2xl border-2 flex justify-between items-center ${historiquePaye.inscription ? 'bg-gray-100 border-gray-200' : 'bg-orange-50 border-orange-200'}`}>
                 <span className="font-black text-xs uppercase">Inscription de base</span>
                 <span className="font-black text-xs text-orange-600">{historiquePaye.inscription ? "✓ RÉGLÉ" : formatPrix(CONFIG_FINANCE.frais.inscription) + " FC"}</span>
-              <span className="font-black text-xs text-orange-600">{historiquePaye.tenue ? "✓ RÉGLÉ" : formatPrix(CONFIG_FINANCE.frais.tenue) + " FC"}</span>
-              <span className="font-black text-xs text-orange-600">{historiquePaye.dossier ? "✓ RÉGLÉ" : formatPrix(CONFIG_FINANCE.frais.dossier) + " FC"}</span>
+              {/* <span className="font-black text-xs text-orange-600">{historiquePaye.tenue ? "✓ RÉGLÉ" : formatPrix(CONFIG_FINANCE.frais.tenue) + " FC"}</span> */}
+              {/* <span className="font-black text-xs text-orange-600">{historiquePaye.dossier ? "✓ RÉGLÉ" : formatPrix(CONFIG_FINANCE.frais.dossier) + " FC"}</span> */}
               </div>
 
               {/* Bloc Options - Apparaît si l'un des deux n'est pas payé */}
-              {(!historiquePaye.dossier || !historiquePaye.tenue) && (
+              {/* {(!historiquePaye.dossier || !historiquePaye.tenue) && (
                 <div className="grid grid-cols-2 gap-3">
                   {!historiquePaye.dossier && (
                     <button onClick={() => setInclureDossier(!inclureDossier)} className={`p-3 rounded-xl border-2 transition-all flex flex-col ${inclureDossier ? 'border-brand-green bg-green-50' : 'border-gray-100 opacity-50'}`}>
@@ -285,7 +286,7 @@ export default function CaissePage() {
                     </button>
                   )}
                 </div>
-              )}
+              )} */}
             </div>
 
             {/* Tranches */}
