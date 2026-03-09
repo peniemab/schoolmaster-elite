@@ -81,8 +81,8 @@ export default function CaisseView({ onClose, vueFullActive }: CaisseViewProps) 
     const diffT3 = Math.max(0, montantT3 - historiquePaye.t3);
     let total = 0;
     if (!historiquePaye.inscription) total += CONFIG_FINANCE.frais.inscription;
-    if (inclureDossier && !historiquePaye.dossier) total += CONFIG_FINANCE.frais.dossier;
-    if (inclureTenue && !historiquePaye.tenue) total += CONFIG_FINANCE.frais.tenue;
+    // if (inclureDossier && !historiquePaye.dossier) total += CONFIG_FINANCE.frais.dossier;
+    // if (inclureTenue && !historiquePaye.tenue) total += CONFIG_FINANCE.frais.tenue;
     return total + diffT1 + diffT2 + diffT3;
   };
 
@@ -116,12 +116,12 @@ export default function CaisseView({ onClose, vueFullActive }: CaisseViewProps) 
       }
       if (inclureDossier) {
           doc.text("- Frais de Dossier", 5, y);
-          doc.text(`${formatPrix(CONFIG_FINANCE.frais.dossier)}`, 75, y, { align: "right" });
+          // doc.text(`${formatPrix(CONFIG_FINANCE.frais.dossier)}`, 75, y, { align: "right" });
           y += 5;
       }
       if (inclureTenue) {
           doc.text("- Tenue Scolaire", 5, y);
-          doc.text(`${formatPrix(CONFIG_FINANCE.frais.tenue)}`, 75, y, { align: "right" });
+          // doc.text(`${formatPrix(CONFIG_FINANCE.frais.tenue)}`, 75, y, { align: "right" });
           y += 5;
       }
   
@@ -243,12 +243,12 @@ export default function CaisseView({ onClose, vueFullActive }: CaisseViewProps) 
                     <button onClick={() => !historiquePaye.dossier && setInclureDossier(!inclureDossier)} 
                             className={`p-3 rounded-xl border-2 transition-all flex flex-col ${inclureDossier ? 'border-blue-600 bg-blue-50' : 'border-slate-50 opacity-60'}`}>
                       <span className="text-[10px] font-black text-slate-400">DOSSIER</span>
-                      <span className="font-bold text-slate-700">{formatPrix(CONFIG_FINANCE.frais.dossier)} FC</span>
+                      {/* <span className="font-bold text-slate-700">{formatPrix(CONFIG_FINANCE.frais.dossier)} FC</span> */}
                     </button>
                     <button onClick={() => !historiquePaye.tenue && setInclureTenue(!inclureTenue)} 
                             className={`p-3 rounded-xl border-2 transition-all flex flex-col ${inclureTenue ? 'border-blue-600 bg-blue-50' : 'border-slate-50 opacity-60'}`}>
                       <span className="text-[10px] font-black text-slate-400">TENUE</span>
-                      <span className="font-bold text-slate-700">{formatPrix(CONFIG_FINANCE.frais.tenue)} FC</span>
+                      {/* <span className="font-bold text-slate-700">{formatPrix(CONFIG_FINANCE.frais.tenue)} FC</span> */}
                     </button>
                 </div>
               </div>
@@ -303,7 +303,7 @@ export default function CaisseView({ onClose, vueFullActive }: CaisseViewProps) 
   current={vueFullActive || 'paiements'} 
   setOnglet={(val) => {
     if (val === 'stats') {
-      onClose(); // ✅ On appelle la fonction passée par le parent
+      onClose(); 
     }
   }} 
 /> 

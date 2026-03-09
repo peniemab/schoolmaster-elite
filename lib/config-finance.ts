@@ -2,8 +2,8 @@ export const CONFIG_FINANCE = {
   devise: "FC",
   frais: {
     inscription: 50000,
-    dossier: 10000,
-    tenue: 25000,
+    // dossier: 10000,
+    // tenue: 25000,
   },
   // On ajoute les tranches ici
   tranches: {
@@ -12,7 +12,8 @@ export const CONFIG_FINANCE = {
     t3: 75000,  
   },
   get totalInscription() {
-    return this.frais.inscription + this.frais.dossier + this.frais.tenue;
+    return this.frais.inscription 
+    // return this.frais.inscription + this.frais.dossier + this.frais.tenue;
   },
   // Optionnel : Total général de l'année (Inscription + toutes les tranches)
   get totalGeneral() {

@@ -96,7 +96,6 @@ const [trimestre, setTrimestre] = useState(1);
       }
     });
 
-    // 4. Calcul du taux spécifique au compartiment
     const objectifTotalEcole = response.documents.length * objectifUnique;
     let resultatTaux = objectifTotalEcole > 0 ? (cumulCollecteFiltre / objectifTotalEcole) * 100 : 0;
     
@@ -123,13 +122,13 @@ useEffect(() => {
   const init = async () => {
     try {
       await account.get();
-      await chargerDonneesDuJour(); // Cette fonction sera relancée à chaque changement de 'trimestre'
+      await chargerDonneesDuJour(); 
     } catch (error) {
       router.push('/login');
     }
   };
   init();
-}, [trimestre]); // 👈 C'est ici que la magie opère !
+}, [trimestre]); 
 
   const handleLogout = async () => {
     await account.deleteSession('current');
@@ -147,7 +146,6 @@ useEffect(() => {
   return (
     <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-900">
       
-      {/* TOPBAR NAV (Comme sur ta photo) */}
       <nav className="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between sticky top-0 z-50">
         <div className="flex items-center gap-2">
           <div className="bg-slate-900 p-2 rounded-lg text-white">
@@ -159,7 +157,6 @@ useEffect(() => {
         </div>
 
        <div className="hidden lg:flex items-center gap-6">
-  {/* Bouton Dashboard */}
   <button 
     onClick={() => setOngletActif('stats')}
     className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${
@@ -169,7 +166,6 @@ useEffect(() => {
     <LayoutDashboard size={14} /> Tableau de Bord
   </button>
 
-  {/* Bouton Admission */}
   <button 
     onClick={() => setOngletActif('admissions')}
     className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${
@@ -179,7 +175,6 @@ useEffect(() => {
     <UserPlus size={14} /> Admission
   </button>
 
-  {/* Bouton Paiements (Caisse) */}
   <button 
     onClick={() => setOngletActif('paiements')}
     className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${
@@ -189,7 +184,6 @@ useEffect(() => {
     <CreditCard size={14} /> Paiements
   </button>
 
-  {/* Bouton Impayés */}
   <button 
     onClick={() => setOngletActif('impayes')}
     className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${
@@ -198,8 +192,6 @@ useEffect(() => {
   >
     <Clock size={14} /> Impayés
   </button>
-
-  {/* Bouton Liste des Élèves */}
   <button 
     onClick={() => setOngletActif('eleves')}
     className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${
@@ -221,10 +213,8 @@ useEffect(() => {
         </div>
       </nav>
 <main className="p-8 max-w-7xl mx-auto space-y-8 pb-24 md:pb-8">
-  {/* SI l'onglet est 'stats', on affiche le Dashboard classique */}
   {ongletActif === 'stats' && (
     <>        
-        {/* TITRE SECTION */}
         <div className="flex items-center gap-4">
           <div className="bg-blue-600 p-3 rounded-2xl text-white shadow-lg shadow-blue-200">
             <LayoutDashboard size={32} />
@@ -236,13 +226,10 @@ useEffect(() => {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-  {/* Injection du composant réutilisable */}
   <TrimestreSelector 
     value={trimestre} 
     onChange={setTrimestre} 
   />
-  
-  {/* Ici tu peux ajouter d'autres boutons ou filtres si nécessaire */}
 </div>
 
         {/* GRILLE DES CARTES (Design exact photo) */}
@@ -335,9 +322,7 @@ useEffect(() => {
 <Modal 
   isOpen={vueFullActive !== null} 
   onClose={() => {
-    // 1. On ferme la vue actuelle
     setVueFullActive(null); 
-    // 2. On déclenche l'actualisation automatique dès qu'on revient sur le dashboard
     chargerDonneesDuJour(); 
   }} 
   title={
@@ -360,11 +345,15 @@ useEffect(() => {
 {vueFullActive === 'admissions' && (
   <AdmissionView 
     onSuccess={() => chargerDonneesDuJour()} 
-    onClose={() => setVueFullActive(null)} // ✅ Ajoute cette ligne impérativement
+    onClose={() => setVueFullActive(null)} 
   />
 )}
   {vueFullActive === 'impayes' && <ImpayesView />}
-  {vueFullActive === 'eleves' && <ElevesView />}
+  {vueFullActive === 'eleves' && (
+    <ElevesView 
+      onClose={() => setVueFullActive(null)} 
+      activeView={vueFullActive} 
+    />)}
 </Modal>
 
     <MobileNav 

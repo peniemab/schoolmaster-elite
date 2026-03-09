@@ -2,19 +2,16 @@
 
 import React from 'react';
 import { LayoutDashboard, UserPlus, CreditCard, Clock, List } from 'lucide-react';
-// IMPORT du type depuis le dashboard
 import { OngletType } from '@/app/dashboard/page'; 
 
 interface MobileNavProps {
-  setOnglet: (val: OngletType) => void; // On utilise le type officiel ici
-  current: OngletType; // Et ici aussi
+  setOnglet: (val: OngletType) => void; 
+  current: OngletType; 
 }
 
 
-// C'est ICI qu'il fallait ajouter les arguments entre les accolades { }
 export default function MobileNav({ setOnglet, current }: MobileNavProps) {
   
-  // Fonction pour styliser le bouton actif (plus besoin de pathname, on utilise 'current')
   const getStyle = (id: string) => current === id ? "text-blue-600" : "text-slate-400";
 
   return (
@@ -32,7 +29,7 @@ export default function MobileNav({ setOnglet, current }: MobileNavProps) {
       {/* Paiements */}
       <button 
         onClick={() => setOnglet('paiements')}
-        className={`flex flex-col items-center gap-1 transition-colors ${getStyle('caisse')}`}
+        className={`flex flex-col items-center gap-1 transition-colors ${getStyle('paiements')}`}
       >
         <CreditCard size={20} />
         <span className="text-[10px] font-bold uppercase">Paiements</span>
